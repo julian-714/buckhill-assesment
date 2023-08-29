@@ -1,0 +1,59 @@
+version: "3.7"
+services:
+    petshop:
+        container_name: petshop
+        image: petshop:1.0.0
+        working_dir: /var/www/html
+        restart: always
+        hostname: "${APP_DOMAIN}"
+        env_file: '.env'
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        ports:
+            - "80:80"
+        volumes:
+            - ./:/var/www/html
+        depends_on:
+            - petshop_db
+            - petshop_phpmyadmin
+
+    petshop_db:
+        container_name: petshop_db
+        image: mysql:8.0.33
+        restart: always
+        hostname: petshop-mysql.local
+        environment:
+            MYSQL_ROOT_PASSWORD: "supersecret"
+            MYSQL_DATABASE: "${DB_DATABASE}"
+            MYSQL_USER: "${DB_USERNAME}"
+            MYSQL_PASSWORD: "${DB_PASSWORD}"
+        volumes:
+            - mysql-data:/var/lib/mysql
+            - './mysql/mysql-grant.sh:/docker-entrypoint-initdb.d/mysql-grant.sh'
+        ports:
+            - "3309:3306"
+
+    petshop_phpmyadmin:
+        container_name: petshop_phpmyadmin
+        image: phpmyadmin:5.2.0
+        restart: always
+        hostname: petshop_phpmyadmin.local
+        environment:
+            PMA_ARBITRARY: 1
+            PMA_HOST: ${DB_HOST}
+            PMA_USER: ${DB_USERNAME}
+            PMA_PASSWORD: ${DB_PASSWORD}
+            PMA_PORT: ${DB_PORT}
+        depends_on:
+            - petshop_db
+        ports:
+            - 7890:80
+
+volumes:
+    mysql-data:
+
+networks:
+    default:
+        external: true
+        name: petshop
