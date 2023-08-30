@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api\V1\Admin;
 
-use App\Events\UserAuthAttempt;
-use App\Http\Controllers\Api\BaseController;
 use App\Models\JwtToken;
 use Illuminate\Http\Request;
+use App\Events\UserAuthAttempt;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Api\BaseController;
 
 class AuthController extends BaseController
 {
@@ -52,11 +52,7 @@ class AuthController extends BaseController
      */
     public function login(Request $request): \Illuminate\Http\JsonResponse
     {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
-
+        $this->validateLogin($request);
         $token = $this->processLogin($request);
         // If Token then login success
         if ($token) {
@@ -64,6 +60,19 @@ class AuthController extends BaseController
             return $this->sendResponse(['token' => $token], 'Login successfully');
         }
         return $this->sendError('Failed to authenticate user', 422);
+    }
+
+    /**
+     * Validate user login credentials in the provided request.
+     *
+     * @param \Illuminate\Http\Request $request The HTTP request containing user login data.
+     */
+    public function validateLogin(Request $request): void
+    {
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+        ]);
     }
 
     /**
@@ -123,9 +132,25 @@ class AuthController extends BaseController
     public function logout(): \Illuminate\Http\JsonResponse
     {
         if (Auth::check()) {
-            JwtToken::where('user_id', auth()->user()->id)->delete();
-            Auth::logout();
+            $this->destroyJwtToken();
+            $this->authLogout();
         }
         return $this->sendResponse([], 'Logout successfully');
+    }
+
+    /**
+     * Delete the JWT tokens associated with the authenticated user.
+     */
+    public function destroyJwtToken(): void
+    {
+        JwtToken::where('user_id', auth()->user()->id)->delete();
+    }
+
+    /**
+     * Log the authenticated user out of the application.
+     */
+    public function authLogout(): void
+    {
+        Auth::logout();
     }
 }

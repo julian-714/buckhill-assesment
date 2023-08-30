@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\Api\V1\Admin\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\User\UserController;
+use App\Http\Controllers\Api\V1\Admin\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,5 +20,8 @@ Route::group(['prefix' => 'v1'], function (): void {
     Route::group(['prefix' => 'admin'], function (): void {
         Route::post('/login', [AuthController::class, 'login']);
         Route::get('/logout', [AuthController::class, 'logout']);
+        Route::group(['middleware' => ['admin']], function (): void {
+            Route::get('/user-listing', [UserController::class, 'index']);
+        });
     });
 });
