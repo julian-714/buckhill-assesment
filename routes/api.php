@@ -3,8 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\User\UserController;
 use App\Http\Controllers\Api\V1\Admin\AuthController;
+use App\Http\Controllers\Api\V1\Admin\BrandController;
+use App\Http\Controllers\Api\V1\Main\BlogPostController;
 use App\Http\Controllers\Api\V1\User\UserAuthController;
 use App\Http\Controllers\Api\V1\Main\PromotionController;
+use App\Http\Controllers\Api\V1\Admin\CategoryController;
+use App\Http\Controllers\Api\V1\Admin\OrderStatusController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,5 +41,16 @@ Route::group(['prefix' => 'v1'], function (): void {
     /** Main Page Routes */
     Route::group(['prefix' => 'main'], function (): void {
         Route::get('/promotions', [PromotionController::class, 'index']);
+        Route::get('/blog', [BlogPostController::class, 'index']);
+        Route::get('/blog/{uuid}', [BlogPostController::class, 'getBlog']);
     });
+
+    /** Category List */
+    Route::get('/categories', [CategoryController::class, 'index']);
+
+    /** Brand List */
+    Route::get('/brands', [BrandController::class, 'index']);
+
+    /** Order Status List */
+    Route::get('/order-statuses', [OrderStatusController::class, 'index']);
 });
