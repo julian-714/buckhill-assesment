@@ -2,8 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\User\UserController;
+use App\Http\Controllers\Api\V1\Files\FileController;
 use App\Http\Controllers\Api\V1\Admin\AuthController;
 use App\Http\Controllers\Api\V1\Admin\BrandController;
+use App\Http\Controllers\Api\V1\Admin\ProductController;
 use App\Http\Controllers\Api\V1\Main\BlogPostController;
 use App\Http\Controllers\Api\V1\User\UserAuthController;
 use App\Http\Controllers\Api\V1\Main\PromotionController;
@@ -53,4 +55,21 @@ Route::group(['prefix' => 'v1'], function (): void {
 
     /** Order Status List */
     Route::get('/order-statuses', [OrderStatusController::class, 'index']);
+
+    /** File Fetch By UUID */
+    Route::get('/file/{uuid}', [FileController::class, 'getFile']);
+
+    /** Product List / Product Fetch by UUID */
+    Route::get('/products', [ProductController::class, 'index']);
+    Route::get('/product/{uuid}', [ProductController::class, 'show']);
+
+    Route::group(['middleware' => 'user'], function (): void {
+        /** Files Upload */
+        Route::post('/file/upload', [FileController::class, 'uploadFile']);
+
+        /** Product Store/Update/Delete */
+        Route::post('/product/create', [ProductController::class, 'store']);
+        Route::put('/product/{uuid}', [ProductController::class, 'update']);
+        Route::delete('/product/{uuid}', [ProductController::class, 'delete']);
+    });
 });
