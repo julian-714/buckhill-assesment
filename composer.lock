@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3d170d12393fcb123e1ee5c6e9e6ce30",
+    "content-hash": "749f0c922910e7f8f2beebec443f53d3",
     "packages": [
         {
             "name": "brick/math",
@@ -1126,6 +1126,63 @@
             "time": "2023-08-27T10:19:19+00:00"
         },
         {
+            "name": "laravel-notification-channels/microsoft-teams",
+            "version": "v1.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel-notification-channels/microsoft-teams.git",
+                "reference": "e2df0129ba430666979eb2ad7033455fd0f6b577"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel-notification-channels/microsoft-teams/zipball/e2df0129ba430666979eb2ad7033455fd0f6b577",
+                "reference": "e2df0129ba430666979eb2ad7033455fd0f6b577",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.3 || ^7.0",
+                "illuminate/notifications": "~5.5 || ~6.0 || ~7.0 || ^8.0 || ^9.0 || ^10.0",
+                "illuminate/support": "~5.5 || ~6.0 || ~7.0 || ^8.0 || ^9.0 || ^10.0",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.2.3",
+                "phpunit/phpunit": "^8.0|^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "NotificationChannels\\MicrosoftTeams\\MicrosoftTeamsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "NotificationChannels\\MicrosoftTeams\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tobias Madner",
+                    "email": "tobias.madner@gmx.at",
+                    "homepage": "https://www.pinpoll.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A Laravel Notification Channel for Microsoft Teams",
+            "homepage": "https://github.com/laravel-notification-channels/microsoft-teams",
+            "support": {
+                "issues": "https://github.com/laravel-notification-channels/microsoft-teams/issues",
+                "source": "https://github.com/laravel-notification-channels/microsoft-teams/tree/v1.1.4"
+            },
+            "time": "2023-01-25T16:56:40+00:00"
+        },
+        {
             "name": "laravel/framework",
             "version": "v10.22.0",
             "source": {
@@ -2097,6 +2154,71 @@
                 }
             ],
             "time": "2023-08-05T12:09:49+00:00"
+        },
+        {
+            "name": "logicrays/orderstatusnotifier",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "./package/logicrays/orderstatusnotifier",
+                "reference": "ad9f0b0855a684ec58205dc598b35197dc066344"
+            },
+            "require": {
+                "laravel-notification-channels/microsoft-teams": "^1.1",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.0",
+                "phpunit/phpunit": "^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Logicrays\\OrderStatusNotifier\\OrderStatusNotifierServiceProvider"
+                    ],
+                    "aliases": {
+                        "OrderStatusNotifier": "Logicrays\\OrderStatusNotifier\\OrderStatusNotifierFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Logicrays\\OrderStatusNotifier\\": "src"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Logicrays\\OrderStatusNotifier\\Tests\\": "tests"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "vendor/bin/phpunit"
+                ],
+                "test-coverage": [
+                    "vendor/bin/phpunit --coverage-html coverage"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Juliyan",
+                    "email": "julian714@rediffmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This Laravel package is designed to facilitate order status notifications by implementing Events and Listeners. It will enable you to send Microsoft Teams notification cards to a specified webhook endpoint whenever there is an update in the status of an order. The package will pass three mandatory parameters to the listener: order_uuid, new_status, and timestamp to create a meaningful notification card.",
+            "homepage": "https://github.com/logicrays/orderstatusnotifier",
+            "keywords": [
+                "logicrays",
+                "orderstatusnotifier"
+            ],
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "monolog/monolog",
@@ -10387,7 +10509,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "logicrays/orderstatusnotifier": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

@@ -2,14 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\User\UserController;
-use App\Http\Controllers\Api\V1\Files\FileController;
 use App\Http\Controllers\Api\V1\Admin\AuthController;
+use App\Http\Controllers\Api\V1\Files\FileController;
 use App\Http\Controllers\Api\V1\Admin\BrandController;
 use App\Http\Controllers\Api\V1\Admin\ProductController;
 use App\Http\Controllers\Api\V1\Main\BlogPostController;
 use App\Http\Controllers\Api\V1\User\UserAuthController;
-use App\Http\Controllers\Api\V1\Main\PromotionController;
 use App\Http\Controllers\Api\V1\Admin\CategoryController;
+use App\Http\Controllers\Api\V1\Main\PromotionController;
+use App\Http\Controllers\Api\V1\Payment\PaymentController;
 use App\Http\Controllers\Api\V1\Admin\OrderStatusController;
 
 /*
@@ -71,5 +72,12 @@ Route::group(['prefix' => 'v1'], function (): void {
         Route::post('/product/create', [ProductController::class, 'store']);
         Route::put('/product/{uuid}', [ProductController::class, 'update']);
         Route::delete('/product/{uuid}', [ProductController::class, 'delete']);
+
+        /** Payments Routes */
+        Route::post('payment/create', [PaymentController::class, 'processPayment']);
+        Route::get('/payments', [PaymentController::class, 'getAllPayments']);
+        Route::get('payment/{uuid}', [PaymentController::class, 'getPayment']);
+        Route::put('payment/{uuid}', [PaymentController::class, 'updatePayment']);
+        Route::delete('payment/{uuid}', [PaymentController::class, 'deletePayment']);
     });
 });
