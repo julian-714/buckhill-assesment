@@ -97,3 +97,11 @@ Check in browser
 ```sh
 petshop.local
 ```
+## Level 4 Chalanges
+
+#### Notification service (Package/Library)
+
+- Notification service package is installed with composer as local dependencies
+- This Package is used to build MS Teams notification card
+
+#### Stripe getway payment (Package/Library)

@@ -87,11 +87,8 @@ class OrderController extends BaseController
         $limit = $this->getLimit($request);
         $sortBy = $this->getSortBy($request);
         $sortDesc = $this->getSortDesc($request);
-
         $query = $this->buildOrderQuery();
-
         $newQuery = $this->loadEloquentRelations($query, $sortBy, $sortDesc);
-
         $orders = $newQuery->paginate($limit, ['*'], 'page', $page);
 
         return response()->json($orders);
@@ -239,10 +236,8 @@ class OrderController extends BaseController
             if (is_string($productsArr)) {
                 return $this->sendError('Product not found', 404);
             }
-            $totalAmount = $this->calculateTotalAmount($productsArr);
             $oStatus = $this->getOrderStatus($request->order_status_uuid);
-            $newOrder = $this->createOrder($request, $oStatus, $productsArr, $totalAmount);
-
+            $newOrder = $this->createOrder($request, $oStatus, $productsArr);
             $this->notifyOrderStatus($newOrder->uuid, $oStatus->title);
             $payMethodCreditCard = $this->paymentMethod($request->payment_uuid);
             if ($payMethodCreditCard === true) {
@@ -347,14 +342,8 @@ class OrderController extends BaseController
 
         try {
             $productsArr = $this->prepareProducts($request->products);
-            $totalAmount = $this->calculateTotalAmount($productsArr);
-
-            $deliveryFee = $totalAmount < 500 ? 15 : 0;
             $orderStatus = $this->getOrderStatus($request->order_status_uuid);
-            $paymentId = $this->getPaymentId($request->payment_uuid);
-
-            $this->updateOrder($request, $orderStatus, $paymentId, $productsArr, $totalAmount, $deliveryFee, $uuid);
-
+            $this->updateOrder($request, $orderStatus, $productsArr, $uuid);
             $this->notifyOrderStatus($uuid, $orderStatus->title);
 
             return $this->sendResponse($uuid, 'Order updated successfully');
@@ -408,10 +397,10 @@ class OrderController extends BaseController
     /**
      * Retrieve product information based on the provided product ID.
      *
-     * @param  int|string  $productId  The ID or UUID of the product to retrieve.
+     * @param  int|string|null  $productId  The ID or UUID of the product to retrieve.
      * @return \App\Models\Product|string  The product information if found, or "Product not found" if not found.
      */
-    private function getProduct(int|string $productId): Product|string
+    private function getProduct(int|string|null $productId): Product|string
     {
         $product = Product::getPrice($productId);
         return $product ?? "Product not found";
@@ -458,14 +447,12 @@ class OrderController extends BaseController
      * @param  \Illuminate\Http\Request  $request      The HTTP request object containing additional order data.
      * @param  \App\Models\OrderStatus  $orderStatus  The OrderStatus model representing the order's status.
      * @param  array  $productsArr                    An array containing product details.
-     * @param  float  $totalAmount                   The total order amount.
      * @return \App\Models\Order                    The created Order model instance.
      */
     private function createOrder(
         Request $request,
         OrderStatus $orderStatus,
         array $productsArr,
-        float $totalAmount
     ): Order {
         return Order::create([
             'uuid' => Str::orderedUuid(),
@@ -474,8 +461,8 @@ class OrderController extends BaseController
             'payment_id' => $this->getPaymentId($request->payment_uuid),
             'products' => $productsArr,
             'address' => $request->address,
-            'delivery_fee' => $totalAmount < 500 ? 15 : 0,
-            'amount' => $totalAmount,
+            'delivery_fee' => $this->calculateTotalAmount($productsArr) < 500 ? 15 : 0,
+            'amount' => $this->calculateTotalAmount($productsArr),
         ]);
     }
 
@@ -495,30 +482,24 @@ class OrderController extends BaseController
      *
      * @param  \Illuminate\Http\Request  $request      The HTTP request object containing updated order data.
      * @param  \App\Models\OrderStatus  $orderStatus  The OrderStatus model representing the updated order status.
-     * @param  int  $paymentId                        The ID of the updated payment method.
      * @param  array  $productsArr                    An array containing updated product details.
-     * @param  float  $totalAmount                   The updated total order amount.
-     * @param  float  $deliveryFee                   The updated delivery fee for the order.
      * @param  string  $uuid                         The UUID of the order to be updated.
      * @return int                                   The number of updated rows in the database.
      */
     private function updateOrder(
         Request $request,
         \App\Models\OrderStatus $orderStatus,
-        int $paymentId,
         array $productsArr,
-        float $totalAmount,
-        float $deliveryFee,
         string $uuid
     ): int {
         return Order::where('uuid', '=', $uuid)->update([
             'user_id' => auth()->user()->id,
             'order_status_id' => $orderStatus->id,
-            'payment_id' => $paymentId,
+            'payment_id' => $this->getPaymentId($request->payment_uuid),
             'products' => $productsArr,
             'address' => $request->address,
-            'delivery_fee' => $deliveryFee,
-            'amount' => $totalAmount,
+            'delivery_fee' => $this->calculateTotalAmount($productsArr) < 500 ? 15 : 0,
+            'amount' => $this->calculateTotalAmount($productsArr),
         ]);
     }
 
