@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "749f0c922910e7f8f2beebec443f53d3",
+    "content-hash": "12fc65dbae904ed37cf6f1733b778552",
     "packages": [
         {
             "name": "brick/math",
@@ -2221,6 +2221,47 @@
             }
         },
         {
+            "name": "logicrays/stripe-payment",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "./package/logicrays/stripe-payment",
+                "reference": "6111826aa703ebed66bc31c1331747674d738d13"
+            },
+            "require": {
+                "php": "^8.2",
+                "stripe/stripe-php": "^12.1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Logicrays\\StripePayment\\StripePaymentServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Logicrays\\StripePayment\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "mayur",
+                    "email": "mayur@logicrays.com"
+                }
+            ],
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
             "name": "monolog/monolog",
             "version": "3.4.0",
             "source": {
@@ -3715,6 +3756,67 @@
                 }
             ],
             "time": "2023-04-15T23:01:58+00:00"
+        },
+        {
+            "name": "stripe/stripe-php",
+            "version": "v12.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stripe/stripe-php.git",
+                "reference": "8ef18513811e3ad0cac50f699deac4032409ae07"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/8ef18513811e3ad0cac50f699deac4032409ae07",
+                "reference": "8ef18513811e3ad0cac50f699deac4032409ae07",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "3.5.0",
+                "php-coveralls/php-coveralls": "^2.5",
+                "phpstan/phpstan": "^1.2",
+                "phpunit/phpunit": "^5.7 || ^9.0",
+                "squizlabs/php_codesniffer": "^3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Stripe\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stripe and contributors",
+                    "homepage": "https://github.com/stripe/stripe-php/contributors"
+                }
+            ],
+            "description": "Stripe PHP Library",
+            "homepage": "https://stripe.com/",
+            "keywords": [
+                "api",
+                "payment processing",
+                "stripe"
+            ],
+            "support": {
+                "issues": "https://github.com/stripe/stripe-php/issues",
+                "source": "https://github.com/stripe/stripe-php/tree/v12.1.0"
+            },
+            "time": "2023-08-31T20:23:14+00:00"
         },
         {
             "name": "swagger-api/swagger-ui",
@@ -10510,7 +10612,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "logicrays/orderstatusnotifier": 20
+        "logicrays/orderstatusnotifier": 20,
+        "logicrays/stripe-payment": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

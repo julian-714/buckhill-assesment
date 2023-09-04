@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\User\UserController;
 use App\Http\Controllers\Api\V1\Admin\AuthController;
 use App\Http\Controllers\Api\V1\Files\FileController;
+use App\Http\Controllers\Api\V1\User\OrderController;
 use App\Http\Controllers\Api\V1\Admin\BrandController;
 use App\Http\Controllers\Api\V1\Admin\ProductController;
 use App\Http\Controllers\Api\V1\Main\BlogPostController;
@@ -79,5 +80,10 @@ Route::group(['prefix' => 'v1'], function (): void {
         Route::get('payment/{uuid}', [PaymentController::class, 'getPayment']);
         Route::put('payment/{uuid}', [PaymentController::class, 'updatePayment']);
         Route::delete('payment/{uuid}', [PaymentController::class, 'deletePayment']);
+
+        /** Orders Routes */
+        Route::post('/order/create', [OrderController::class, 'store'])->middleware('user');
+        Route::get('/orders', [OrderController::class, 'index']);
+        Route::put('/order/{uuid}', [OrderController::class, 'update']);
     });
 });

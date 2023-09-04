@@ -8,6 +8,10 @@
         {
             "type": "path",
             "url": "./package/logicrays/orderstatusnotifier"
+        },
+        {
+            "type": "path",
+            "url": "./package/logicrays/stripe-payment"
         }
     ],
     "require": {
@@ -18,6 +22,7 @@
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
         "logicrays/orderstatusnotifier": "dev-main",
+        "logicrays/stripe-payment": "dev-main",
         "php-open-source-saver/jwt-auth": "^2.1"
     },
     "require-dev": {

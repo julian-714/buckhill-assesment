@@ -1173,6 +1173,280 @@
                 ]
             }
         },
+        "/api/v1/orders": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "List all orders",
+                "operationId": "orders-listing",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The page number for pagination. Default is 1.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The number of orders per page. Default is 10.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "description": "The field to sort the orders by (id). Default is id.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "id"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "desc",
+                        "in": "query",
+                        "description": "Sort in descending order (default: false)",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Page not found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/order/create": {
+            "post": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Create a new order",
+                "description": "Store a new order.",
+                "operationId": "24da8b4df346c4db0b418bc352dfd91a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "order_status_uuid",
+                                    "payment_uuid",
+                                    "products",
+                                    "address"
+                                ],
+                                "properties": {
+                                    "order_status_uuid": {
+                                        "description": "The UUID of the order status.",
+                                        "type": "string",
+                                        "format": "uuid"
+                                    },
+                                    "payment_uuid": {
+                                        "description": "The UUID of the payment.",
+                                        "type": "string",
+                                        "format": "uuid"
+                                    },
+                                    "products": {
+                                        "description": "An array of products with their UUIDs and quantities.",
+                                        "type": "array",
+                                        "items": {
+                                            "required": [
+                                                "product_uuid",
+                                                "quantity"
+                                            ],
+                                            "properties": {
+                                                "product_uuid": {
+                                                    "description": "The UUID of a product.",
+                                                    "type": "string",
+                                                    "format": "uuid"
+                                                },
+                                                "quantity": {
+                                                    "description": "The quantity of the product.",
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "address": {
+                                        "properties": {
+                                            "billing": {
+                                                "description": "The billing address.",
+                                                "type": "string"
+                                            },
+                                            "shipping": {
+                                                "description": "The shipping address.",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Page not found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/order/{uuid}": {
+            "put": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Update a order",
+                "description": "Update an existing order",
+                "operationId": "updateOrder",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the order to update",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "order_status_uuid",
+                                    "payment_uuid",
+                                    "products",
+                                    "address"
+                                ],
+                                "properties": {
+                                    "order_status_uuid": {
+                                        "description": "The UUID of the order status.",
+                                        "type": "string",
+                                        "format": "uuid"
+                                    },
+                                    "payment_uuid": {
+                                        "description": "The UUID of the payment.",
+                                        "type": "string",
+                                        "format": "uuid"
+                                    },
+                                    "products": {
+                                        "description": "An array of products with their UUIDs and quantities.",
+                                        "type": "array",
+                                        "items": {
+                                            "required": [
+                                                "product_uuid",
+                                                "quantity"
+                                            ],
+                                            "properties": {
+                                                "product_uuid": {
+                                                    "description": "The UUID of a product.",
+                                                    "type": "string",
+                                                    "format": "uuid"
+                                                },
+                                                "quantity": {
+                                                    "description": "The quantity of the product.",
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "address": {
+                                        "properties": {
+                                            "billing": {
+                                                "description": "The billing address.",
+                                                "type": "string"
+                                            },
+                                            "shipping": {
+                                                "description": "The shipping address.",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Page not found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/user/login": {
             "post": {
                 "tags": [

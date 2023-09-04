@@ -1,0 +1,31 @@
+{
+    "name": "logicrays/stripe-payment",
+    "type": "library",
+    "require": {
+        "php": "^8.2",
+        "stripe/stripe-php": "^12.1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Logicrays\\StripePayment\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "mayur",
+            "email": "mayur@logicrays.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Logicrays\\StripePayment\\StripePaymentServiceProvider"
+            ]
+        }
+    }
+}
