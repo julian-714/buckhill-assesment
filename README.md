@@ -83,6 +83,9 @@ docker exec -it lr_pms bash
 sh setup/install.sh
 ```
 
+Give permission to storage folder
+- sudo chmod -R 777 /storage
+
 Add domain entry to hosts file
 
 ```sh
@@ -97,6 +100,16 @@ Check in browser
 ```sh
 petshop.local
 ```
+
+Use /api/documentation for swagger documentation
+
+Add following required credentials for 
+
+- TEAMS_WEBHOOK_URL
+- STRIPE_PUBLISH_KEY
+- STRIPE_SECRET_KEY
+
+
 ## Level 4 Chalanges
 
 #### Notification service (Package/Library)
@@ -104,4 +117,7 @@ petshop.local
 - Notification service package is installed with composer as local dependencies
 - This Package is used to build MS Teams notification card
 
-#### Stripe getway payment (Package/Library)
+#### Stripe gateway payment (Package/Library)
+
+- Stripe gateway payment package is installed with composer as local dependencies
+- Stripe gateway payment used for stripe payment
