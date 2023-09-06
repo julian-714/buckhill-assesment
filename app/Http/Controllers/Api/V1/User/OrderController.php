@@ -250,6 +250,7 @@ class OrderController extends BaseController
                 'order_uuid' => $newOrder->uuid,
             ], 'Order placed successfully');
         } catch (\Exception $e) {
+            Log::info($e->getMessage());
             return $this->sendError('Internal server error', 500);
         }
     }

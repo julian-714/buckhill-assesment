@@ -73,18 +73,19 @@ This will create the petshop image and pull in the necessary dependencies.
 Once done, run the Docker image and map the port to whatever you wish on
 your host. In this example, we simply map port 80 of the host to
 port 80 of the Docker (or whatever port was exposed in the Dockerfile):
+NOTE: If apache2 is running then kill it
 
 ```sh
 sh docker/start.sh
 ```
 
 ```sh
-docker exec -it lr_pms bash
+docker exec -it petshop bash
 sh setup/install.sh
 ```
 
 Give permission to storage folder
-- sudo chmod -R 777 /storage
+- sudo chmod -R 777 storage
 
 Add domain entry to hosts file
 
