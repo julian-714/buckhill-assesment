@@ -41,6 +41,7 @@ Laravel website API's
     -   File Upload
     -   Fetch File
 
+### Database gets truncated and re-seeded everyday at midnight UTC.
 ## Installation using Docker
 
 Petshop is very easy to install and deploy in a Docker container.
@@ -84,8 +85,11 @@ docker exec -it petshop bash
 sh setup/install.sh
 ```
 
-Give permission to storage folder
-- sudo chmod -R 777 storage
+-Run the below command inside the project directory in the docker container for storage directory permission.
+
+```sh
+chmod -R 777 storage
+```
 
 Add domain entry to hosts file
 
@@ -99,19 +103,27 @@ your preferred browser.
 Check in browser
 
 ```sh
-petshop.local
+petshop.local/api/documentation
 ```
 
-Use /api/documentation for swagger documentation
+Use /api/documentation for swagger documentation.
 
-Add following required credentials for 
+Add the following required Stripe and Microsoft Teams credentials security key and webhook URL inside .env file.
 
 - TEAMS_WEBHOOK_URL
 - STRIPE_PUBLISH_KEY
 - STRIPE_SECRET_KEY
 
+```sh
+docker-compose up --build
+```
+## Unit and Feature test.
+-- Run the below command inside the project directory inside docker container to execute test cases.
 
-## Level 4 Chalanges
+```sh
+php artisan test
+```
+## Level 4 Challenges
 
 #### Notification service (Package/Library)
 
